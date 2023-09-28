@@ -1,6 +1,6 @@
 .env
-# config/
-# data/
+config/
+data/
 !data/**/.gitkeep
 !data/**/*.sample
 !config/**/.gitkeep
