@@ -179,12 +179,12 @@ services:
       - "traefik.http.routers.geonature-backend.rule=Host(`${GEONATURE_BACKEND_HOST}`) && PathPrefix(`${GEONATURE_BACKEND_PREFIX}`)"
       - "traefik.http.routers.geonature-backend.entrypoints=websecure"
       - "traefik.http.routers.geonature-backend.tls.certResolver=acme-resolver"
-    healthcheck:
-      test: ["CMD-SHELL", "/assets/healthcheck_backend.sh"]
-      interval: ${GEONATURE_BACKEND_HEALTHCHECK_INTERVAL}
-      timeout: 10s
-      retries: 30
-      start_period: 5s
+    # healthcheck:
+    #   test: ["CMD-SHELL", "/assets/healthcheck_backend.sh"]
+    #   interval: ${GEONATURE_BACKEND_HEALTHCHECK_INTERVAL}
+    #   timeout: 10s
+    #   retries: 30
+    #   start_period: 5s
 
 
   geonature-frontend:
@@ -201,10 +201,10 @@ services:
   geonature-atlas:
     <<: *defaults
     depends_on:
-      geonature-backend:
-        condition: service_healthy
+      - geonature-backend
     image: ${ATLAS_IMAGE}
     environment:
+      <<: *env-defaults
       http_proxy: ${HTTP_PROXY}
       https_proxy: ${HTTPS_PROXY}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -231,20 +231,15 @@ services:
       - ./assets/atlas:/assets
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-http.rule=Host(`${ATLAS_HOST}`) && PathPrefix(`${ATLAS_PREFIX}`)"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-http.entrypoints=web"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-http.middlewares=https-redirectscheme@file"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-https.rule=Host(`${ATLAS_HOST}`) && PathPrefix(`${ATLAS_PREFIX}`)"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-https.entrypoints=websecure"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-https.tls=true"
-      - "traefik.http.routers.${ATLAS_CONTAINER_NAME}-https.tls.certresolver=acme-resolver"
-      - "traefik.docker.network=${TRAEFIK_NETWORK_NAME}"
-    healthcheck:
-      test: ["CMD-SHELL", "/assets/healthcheck.sh"]
-      interval: ${ATLAS_HEALTHCHECK_INTERVAL}
-      timeout: 10s
-      retries: 20
-      start_period: 0s
+      - "traefik.http.routers.atlas.rule=Host(`${ATLAS_HOST}`) && PathPrefix(`${ATLAS_PREFIX}`)"
+      - "traefik.http.routers.atlas.entrypoints=websecure"
+      - "traefik.http.routers.atlas.tls.certresolver=acme-resolver"
+    # healthcheck:
+    #   test: ["CMD-SHELL", "/assets/healthcheck.sh"]
+    #   interval: ${ATLAS_HEALTHCHECK_INTERVAL}
+    #   timeout: 10s
+    #   retries: 20
+    #   start_period: 0s
 
 
 volumes:

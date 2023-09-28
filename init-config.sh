@@ -9,3 +9,6 @@ fi
 if [ ! -f config/taxhub/config.py ]; then
     echo SECRET_KEY = \"$(openssl rand -hex 16)\" > config/taxhub/config.py
 fi
+if [ ! -f data/atlas/config/config.py ]; then
+    echo SECRET_KEY = \"$(openssl rand -hex 16)\" > data/atlas/config/config.py
+fi
