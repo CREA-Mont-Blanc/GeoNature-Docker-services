@@ -1,6 +1,8 @@
 .env
-/config/
-/data/
+config/
+data/
 !data/**/.gitkeep
 !data/**/*.sample
+!config/**/.gitkeep
+!config/**/*.sample
 *.swp
