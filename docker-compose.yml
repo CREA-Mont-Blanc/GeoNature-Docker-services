@@ -233,7 +233,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.atlas.rule=Host(`${ATLAS_HOST}`) && PathPrefix(`${ATLAS_PREFIX}`)"
       - "traefik.http.routers.atlas.entrypoints=websecure"
-      - "traefik.http.routers.atlas.tls.certresolver=acme-resolver"
+      - "traefik.http.routers.atlas.tls.certResolver=acme-resolver"
     # healthcheck:
     #   test: ["CMD-SHELL", "/assets/healthcheck.sh"]
     #   interval: ${ATLAS_HEALTHCHECK_INTERVAL}

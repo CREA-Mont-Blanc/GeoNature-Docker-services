@@ -6,3 +6,4 @@ data/
 !config/**/.gitkeep
 !config/**/*.sample
 *.swp
+*.backup
