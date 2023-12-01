@@ -3,7 +3,6 @@ version: "3.9"
 x-defaults: &defaults
   user: ${UID:-1000}:${GID:-1000}
 
-
 x-env-defaults: &env-defaults
   http_proxy: ${HTTP_PROXY:-}
   https_proxy: ${HTTPS_PROXY:-}
@@ -57,13 +56,12 @@ services:
       - ${HTTP_PORT:-80}:80
       - ${HTTPS_PORT:-443}:443
 
-
   redis:
     image: ${REDIS_IMAGE:-redis:7-alpine}
     volumes:
       - redis:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -136,7 +134,6 @@ services:
       - "traefik.http.routers.taxhub.tls.certResolver=acme-resolver"
       - "traefik.http.services.taxhub.loadbalancer.server.port=5000"
 
-  
   geonature-install-db:
     <<: *geonature-backend-defaults
     command: "geonature permissions supergrant --yes ${GEONATURE_SUPERGRANT_ARGS:---help}"
@@ -153,7 +150,6 @@ services:
       taxhub: ${GEONATURE_DB_INSTALL_TAXHUB:-true}
       taxhub_samples: ${GEONATURE_DB_INSTALL_TAXHUB_SAMPLES:-true}
 
-    
   geonature-worker:
     <<: *geonature-backend-defaults
     depends_on:
@@ -205,7 +201,7 @@ services:
       - "traefik.http.routers.geonature.entrypoints=websecure"
       - "traefik.http.routers.geonature.tls.certResolver=acme-resolver"
       - "traefik.http.services.geonature.loadbalancer.server.port=80"
-  
+
   geonature-atlas:
     <<: *defaults
     depends_on:
