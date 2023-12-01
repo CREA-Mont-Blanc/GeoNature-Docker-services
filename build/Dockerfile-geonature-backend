@@ -30,8 +30,8 @@ RUN python setup.py bdist_wheel
 FROM ${GEONATURE_BACKEND_IMAGE}-wheels AS prod-extra
 
 WORKDIR /dist/geonature
-RUN --mount=type=cache,target=/var/cache/apt \
-    --mount=type=cache,target=/var/lib/apt \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && apt-get install -y libproj-dev proj-bin
 COPY --from=build-import /build/dist/*.whl .
 COPY --from=build-export /build/dist/*.whl .
